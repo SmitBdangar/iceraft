@@ -1,0 +1,14 @@
+[package]
+name        = "iceraft-metrics"
+description = "Prometheus metrics integration for IceRaft"
+version.workspace    = true
+edition.workspace    = true
+authors.workspace    = true
+license.workspace    = true
+repository.workspace = true
+
+[dependencies]
+prometheus = { workspace = true }
+tracing    = { workspace = true }
+thiserror  = { workspace = true }
+once_cell  = "1"

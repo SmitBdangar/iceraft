@@ -1,0 +1,96 @@
+iceraft-storage\src\mem.rs:6:72: warning: unused import: `SnapshotMeta`
+warning: `iceraft-storage` (lib) generated 1 warning (run `cargo fix --lib -p iceraft-storage` to apply 1 suggestion)
+warning: unused import: `once_cell::sync::Lazy`
+ --> iceraft-metrics\src\lib.rs:5:5
+  |
+5 | use once_cell::sync::Lazy;
+  |     ^^^^^^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: `iceraft-metrics` (lib) generated 1 warning (run `cargo fix --lib -p iceraft-metrics` to apply 1 suggestion)
+warning: unused import: `Snapshot`
+ --> iceraft-node\src\node.rs:7:88
+  |
+7 |     EntryType, HardState, LogEntry, LogIndex, NodeId, Proposal, RaftConfig, RaftError, Snapshot,
+  |                                                                                        ^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `sleep`
+  --> iceraft-node\src\node.rs:22:12
+   |
+22 |     time::{sleep, Instant},
+   |            ^^^^^
+
+warning: unused import: `instrument`
+  --> iceraft-node\src\node.rs:24:35
+   |
+24 | use tracing::{debug, error, info, instrument, warn};
+   |                                   ^^^^^^^^^^
+
+warning: unused variable: `tx`
+   --> iceraft-node\src\node.rs:188:5
+    |
+188 |     tx: ProposalSender,
+    |     ^^ help: if this is intentional, prefix it with an underscore: `_tx`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `current_term`
+   --> iceraft-node\src\node.rs:515:13
+    |
+515 |         let current_term = self.sm.current_term;
+    |             ^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_current_term`
+
+warning: unused variable: `idx`
+   --> iceraft-node\src\node.rs:692:24
+    |
+692 |         let term_of = |idx: LogIndex| {
+    |                        ^^^ help: if this is intentional, prefix it with an underscore: `_idx`
+
+warning: unused variable: `term_of`
+   --> iceraft-node\src\node.rs:692:13
+    |
+692 |         let term_of = |idx: LogIndex| {
+    |             ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_term_of`
+
+warning: fields `config`, `storage`, and `transport` are never read
+  --> iceraft-node\src\node.rs:40:5
+   |
+39 | pub struct RaftNode<S: Storage, T: NetworkTransport> {
+   |            -------- fields in this struct
+40 |     config: Arc<RaftConfig>,
+   |     ^^^^^^
+41 |     storage: Arc<S>,
+   |     ^^^^^^^
+42 |     transport: Arc<T>,
+   |     ^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+    Checking iceraft-node v0.1.0 (C:\Users\Admin\github\iceraft\iceraft-node)
+warning: `iceraft-node` (lib) generated 8 warnings (run `cargo fix --lib -p iceraft-node` to apply 7 suggestions)
+warning: unused variable: `n`
+   --> iceraft-node\tests\integration.rs:176:16
+    |
+176 |         .find(|n| {
+    |                ^ help: if this is intentional, prefix it with an underscore: `_n`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `leader_id`
+   --> iceraft-node\tests\integration.rs:172:9
+    |
+172 |     let leader_id = wait_for_leader(&nodes, 2_000).await.expect("no leader");
+    |         ^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_leader_id`
+
+warning: unused variable: `leader_node`
+   --> iceraft-node\tests\integration.rs:174:9
+    |
+174 |     let leader_node = nodes
+    |         ^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_leader_node`
+
+warning: `iceraft-node` (test "integration") generated 3 warnings (run `cargo fix --test "integration" -p iceraft-node` to apply 3 suggestions)
+warning: `iceraft-node` (lib test) generated 8 warnings (8 duplicates)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.42s

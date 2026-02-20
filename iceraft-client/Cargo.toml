@@ -1,0 +1,17 @@
+[package]
+name        = "iceraft-client"
+description = "Client-facing helpers for interacting with an IceRaft cluster"
+version.workspace    = true
+edition.workspace    = true
+authors.workspace    = true
+license.workspace    = true
+repository.workspace = true
+
+[dependencies]
+iceraft-core    = { path = "../iceraft-core" }
+iceraft-network = { path = "../iceraft-network" }
+tokio           = { workspace = true }
+async-trait     = { workspace = true }
+thiserror       = { workspace = true }
+tracing         = { workspace = true }
+anyhow          = { workspace = true }

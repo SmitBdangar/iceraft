@@ -1,0 +1,25 @@
+[package]
+name        = "iceraft"
+description = "Production-grade Raft consensus library for async Rust"
+version.workspace    = true
+edition.workspace    = true
+authors.workspace    = true
+license.workspace    = true
+repository.workspace = true
+keywords             = ["raft", "consensus", "distributed", "async", "tokio"]
+categories           = ["network-programming", "asynchronous"]
+
+[features]
+default = []
+rocksdb = ["iceraft-storage/rocksdb"]
+
+[dependencies]
+iceraft-core    = { path = "../iceraft-core" }
+iceraft-storage = { path = "../iceraft-storage" }
+iceraft-network = { path = "../iceraft-network" }
+iceraft-node    = { path = "../iceraft-node" }
+iceraft-client  = { path = "../iceraft-client" }
+iceraft-metrics = { path = "../iceraft-metrics" }
+tokio           = { workspace = true }
+tracing         = { workspace = true }
+async-trait     = { workspace = true }

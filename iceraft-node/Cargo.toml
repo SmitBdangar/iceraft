@@ -1,0 +1,25 @@
+[package]
+name        = "iceraft-node"
+description = "Raft state machine – leader election, log replication, snapshots"
+version.workspace    = true
+edition.workspace    = true
+authors.workspace    = true
+license.workspace    = true
+repository.workspace = true
+
+[dependencies]
+iceraft-core    = { path = "../iceraft-core" }
+iceraft-storage = { path = "../iceraft-storage" }
+iceraft-network = { path = "../iceraft-network" }
+iceraft-metrics = { path = "../iceraft-metrics" }
+tokio           = { workspace = true }
+tokio-stream    = { workspace = true }
+async-trait     = { workspace = true }
+serde           = { workspace = true }
+serde_json      = { workspace = true }
+thiserror       = { workspace = true }
+tracing         = { workspace = true }
+rand            = { workspace = true }
+futures         = { workspace = true }
+bytes           = { workspace = true }
+anyhow          = { workspace = true }

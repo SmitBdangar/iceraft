@@ -1,0 +1,14 @@
+[package]
+name        = "iceraft-core"
+description = "Core types, configuration and error definitions for IceRaft"
+version.workspace    = true
+edition.workspace    = true
+authors.workspace    = true
+license.workspace    = true
+repository.workspace = true
+
+[dependencies]
+serde      = { workspace = true }
+thiserror  = { workspace = true }
+bytes      = { workspace = true }
+tokio      = { workspace = true, features = ["sync"] }

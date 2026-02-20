@@ -1,0 +1,61 @@
+[workspace]
+members = [
+    "iceraft-core",
+    "iceraft-storage",
+    "iceraft-network",
+    "iceraft-node",
+    "iceraft-metrics",
+    "iceraft-client",
+    "iceraft",
+]
+resolver = "2"
+
+[workspace.package]
+version      = "0.1.0"
+edition      = "2021"
+authors      = ["IceRaft Contributors"]
+license      = "Apache-2.0"
+repository   = "https://github.com/iceraft/iceraft"
+keywords     = ["raft", "consensus", "distributed", "async"]
+categories   = ["network-programming", "asynchronous"]
+
+[workspace.dependencies]
+# async runtime
+tokio          = { version = "1", features = ["full"] }
+tokio-stream   = { version = "0.1" }
+
+# gRPC / protobuf
+tonic          = { version = "0.11" }
+prost          = { version = "0.12" }
+tonic-build    = { version = "0.11" }
+prost-build    = { version = "0.12" }
+
+# serialisation
+serde          = { version = "1", features = ["derive"] }
+serde_json     = { version = "1" }
+bytes          = { version = "1" }
+
+# error handling
+thiserror      = { version = "1" }
+anyhow         = { version = "1" }
+
+# logging / tracing
+tracing        = { version = "0.1" }
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# metrics
+prometheus     = { version = "0.13", features = ["process"] }
+
+# utilities
+rand           = { version = "0.8" }
+dashmap        = { version = "5" }
+parking_lot    = { version = "0.12" }
+async-trait    = { version = "0.1" }
+futures        = { version = "0.3" }
+uuid           = { version = "1", features = ["v4"] }
+
+
+[profile.release]
+lto           = true
+codegen-units = 1
+opt-level     = 3
