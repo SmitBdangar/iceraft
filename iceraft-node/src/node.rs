@@ -4,7 +4,7 @@ use std::sync::Arc;
 use std::time::Duration;
 
 use iceraft_core::{
-    EntryType, HardState, LogEntry, LogIndex, NodeId, Proposal, RaftConfig, RaftError, Snapshot,
+    EntryType, HardState, LogEntry, LogIndex, NodeId, Proposal, RaftConfig, RaftError,
 };
 use iceraft_metrics::RaftMetrics;
 use iceraft_network::{
@@ -19,9 +19,9 @@ use iceraft_storage::Storage;
 use rand::Rng;
 use tokio::{
     sync::{mpsc, Mutex},
-    time::{sleep, Instant},
+    time::Instant,
 };
-use tracing::{debug, error, info, instrument, warn};
+use tracing::{debug, error, info, warn};
 
 use crate::message::RaftMessage;
 use crate::state::{RaftRole, RaftStateMachine};
@@ -190,7 +190,7 @@ async fn run_event_loop<S: Storage, T: NetworkTransport>(
     mut rx: ProposalReceiver,
     apply_tx: mpsc::UnboundedSender<LogEntry>,
     config: Arc<RaftConfig>,
-    tx: ProposalSender,
+    _tx: ProposalSender,
 ) {
     // Restore hard state from storage.
     {
@@ -526,7 +526,7 @@ impl<S: Storage, T: NetworkTransport> RaftNodeInner<S, T> {
         let peers: Vec<NodeId> = self.config.peers.clone();
         let quorum = self.config.quorum();
         let transport = self.transport.clone();
-        let current_term = self.sm.current_term;
+        let _current_term = self.sm.current_term;
 
         // Fan out RequestVote RPCs as independent tasks.
         for peer in peers {
@@ -708,12 +708,10 @@ impl<S: Storage, T: NetworkTransport> RaftNodeInner<S, T> {
                 p.match_index = p.match_index.max(req_last_index);
                 p.next_index = p.match_index + 1;
                 p.in_flight = false;
+            } else if resp.conflict_index > 0 {
+                p.next_index = resp.conflict_index;
             } else {
-                if resp.conflict_index > 0 {
-                    p.next_index = resp.conflict_index;
-                } else {
-                    p.next_index = p.next_index.saturating_sub(1).max(1);
-                }
+                p.next_index = p.next_index.saturating_sub(1).max(1);
             }
         }
         self.maybe_advance_commit().await;
@@ -750,7 +748,7 @@ impl<S: Storage, T: NetworkTransport> RaftNodeInner<S, T> {
         let term = self.sm.current_term;
         let storage = self.storage.clone();
 
-        let term_of = |idx: LogIndex| {
+        let _term_of = |_idx: LogIndex| {
             // sync call–we can't await inside a closure; we'll use a pre-
             // fetched map approach for simplicity (small range expected).
             None::<u64> // placeholder; see note below

@@ -58,6 +58,12 @@ pub struct RaftStateMachine {
     pub votes_received: std::collections::HashSet<NodeId>,
 }
 
+impl Default for RaftStateMachine {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl RaftStateMachine {
     pub fn new() -> Self {
         Self {
