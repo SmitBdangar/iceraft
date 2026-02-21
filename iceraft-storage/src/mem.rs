@@ -3,7 +3,7 @@
 use std::sync::Arc;
 
 use async_trait::async_trait;
-use iceraft_core::{HardState, LogEntry, LogIndex, RaftError, Snapshot, SnapshotMeta, Term};
+use iceraft_core::{HardState, LogEntry, LogIndex, RaftError, Snapshot, Term};
 use parking_lot::RwLock;
 
 use crate::Storage;
