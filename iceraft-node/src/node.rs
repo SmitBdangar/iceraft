@@ -213,7 +213,15 @@ async fn run_event_loop<S: Storage, T: NetworkTransport>(
     info!(id = config.id, "raft node started");
 
     loop {
-        let timeout = tokio::time::sleep_until(heartbeat_deadline.min(election_deadline));
+        let deadline = {
+            let g = inner.lock().await;
+            if g.sm.role == RaftRole::Leader {
+                heartbeat_deadline
+            } else {
+                election_deadline
+            }
+        };
+        let timeout = tokio::time::sleep_until(deadline);
         tokio::select! {
             msg = rx.recv() => {
                 match msg {
@@ -786,6 +794,7 @@ impl<S: Storage, T: NetworkTransport> RaftNodeInner<S, T> {
             self.metrics
                 .entries_committed
                 .inc_by(new_commit - self.sm.last_applied);
+            self.metrics.commit_index.set(new_commit as i64);
         }
 
         // Notify pending proposals that have committed.
@@ -828,6 +837,7 @@ impl<S: Storage, T: NetworkTransport> RaftNodeInner<S, T> {
         if let Err(e) = self.storage.save_hard_state(&hs).await {
             error!("failed to save hard state: {e}");
         }
+        self.metrics.current_term.set(self.sm.current_term as i64);
     }
 
     /// Binary search for the first index at which `term` appears, up to `upper`.

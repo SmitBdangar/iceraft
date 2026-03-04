@@ -23,43 +23,43 @@ static GLOBAL_METRICS: Lazy<RaftMetrics> = Lazy::new(|| RaftMetrics {
         "raft_elections_started_total",
         "Total number of elections started by this node"
     )
-    .expect("register elections_started"),
+    .unwrap_or_else(|_| prometheus::IntCounter::new("raft_elections_started_total", "Total number of elections started by this node").unwrap()),
 
     votes_granted: register_int_counter!(
         "raft_votes_granted_total",
         "Total number of votes granted to peers"
     )
-    .expect("register votes_granted"),
+    .unwrap_or_else(|_| prometheus::IntCounter::new("raft_votes_granted_total", "Total number of votes granted to peers").unwrap()),
 
     leader_changes: register_int_counter!(
         "raft_leader_changes_total",
         "Total number of times this node became leader"
     )
-    .expect("register leader_changes"),
+    .unwrap_or_else(|_| prometheus::IntCounter::new("raft_leader_changes_total", "Total number of times this node became leader").unwrap()),
 
     append_entries_received: register_int_counter!(
         "raft_append_entries_received_total",
         "Total AppendEntries RPCs received"
     )
-    .expect("register append_entries_received"),
+    .unwrap_or_else(|_| prometheus::IntCounter::new("raft_append_entries_received_total", "Total AppendEntries RPCs received").unwrap()),
 
     entries_committed: register_int_counter!(
         "raft_entries_committed_total",
         "Total log entries committed"
     )
-    .expect("register entries_committed"),
+    .unwrap_or_else(|_| prometheus::IntCounter::new("raft_entries_committed_total", "Total log entries committed").unwrap()),
 
     snapshots_installed: register_int_counter!(
         "raft_snapshots_installed_total",
         "Total snapshots installed from leader"
     )
-    .expect("register snapshots_installed"),
+    .unwrap_or_else(|_| prometheus::IntCounter::new("raft_snapshots_installed_total", "Total snapshots installed from leader").unwrap()),
 
     current_term: register_int_gauge!("raft_current_term", "Current Raft term")
-        .expect("register current_term"),
+        .unwrap_or_else(|_| prometheus::IntGauge::new("raft_current_term", "Current Raft term").unwrap()),
 
     commit_index: register_int_gauge!("raft_commit_index", "Current commit index")
-        .expect("register commit_index"),
+        .unwrap_or_else(|_| prometheus::IntGauge::new("raft_commit_index", "Current commit index").unwrap()),
 });
 
 impl RaftMetrics {

@@ -19,7 +19,6 @@ USAGE
 -----
 
     [dependencies]
-    iceraft = "0.1"
     tokio   = { version = "1", features = ["full"] }
 
     use std::sync::Arc;

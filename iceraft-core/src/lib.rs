@@ -182,6 +182,9 @@ pub enum RaftError {
     #[error("network error: {0}")]
     Network(String),
 
+    #[error("node is shutting down")]
+    Shutdown,
+
     #[error("log compacted: requested index {requested} has been compacted (first available: {first_available})")]
     LogCompacted {
         requested: LogIndex,
