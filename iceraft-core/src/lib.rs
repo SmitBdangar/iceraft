@@ -89,7 +89,7 @@ impl RaftConfig {
 
     /// Quorum size for the current configuration.
     pub fn quorum(&self) -> usize {
-        (self.members().len() / 2) + 1
+        ((self.peers.len() + 1) / 2) + 1
     }
 }
 

@@ -531,13 +531,12 @@ impl<S: Storage, T: NetworkTransport> RaftNodeInner<S, T> {
             pre_vote: false,
         };
 
-        let peers: Vec<NodeId> = self.config.peers.clone();
         let quorum = self.config.quorum();
         let transport = self.transport.clone();
-        let current_term = self.sm.current_term;
 
         // Fan out RequestVote RPCs as independent tasks.
-        for peer in peers {
+        for i in 0..self.config.peers.len() {
+            let peer = self.config.peers[i];
             let t = transport.clone();
             let r = req.clone();
             let tx = self.tx.clone();
@@ -550,8 +549,7 @@ impl<S: Storage, T: NetworkTransport> RaftNodeInner<S, T> {
 
         if self.sm.votes_received.len() >= quorum && self.sm.role == RaftRole::Candidate {
             let last_index = self.storage.last_index().await.unwrap_or(0);
-            let peers_vec: Vec<NodeId> = self.config.peers.clone();
-            self.sm.become_leader(self_id, last_index, &peers_vec);
+            self.sm.become_leader(self_id, last_index, &self.config.peers);
             info!(id = self_id, term = self.sm.current_term, "became leader");
             self.metrics.leader_changes.inc();
             // Send immediate heartbeats.
@@ -567,8 +565,8 @@ impl<S: Storage, T: NetworkTransport> RaftNodeInner<S, T> {
             return;
         }
 
-        let peers: Vec<NodeId> = self.config.peers.clone();
-        for peer in peers {
+        for i in 0..self.config.peers.len() {
+            let peer = self.config.peers[i];
             self.replicate_to(peer).await;
         }
     }
@@ -683,9 +681,8 @@ impl<S: Storage, T: NetworkTransport> RaftNodeInner<S, T> {
             let quorum = self.config.quorum();
             if self.sm.votes_received.len() >= quorum {
                 let last_index = self.storage.last_index().await.unwrap_or(0);
-                let peers_vec: Vec<NodeId> = self.config.peers.clone();
                 self.sm
-                    .become_leader(self.config.id, last_index, &peers_vec);
+                    .become_leader(self.config.id, last_index, &self.config.peers);
                 info!(
                     id = self.config.id,
                     term = self.sm.current_term,
@@ -757,12 +754,6 @@ impl<S: Storage, T: NetworkTransport> RaftNodeInner<S, T> {
         let quorum = self.config.quorum();
         let term = self.sm.current_term;
         let storage = self.storage.clone();
-
-        let term_of = |idx: LogIndex| {
-            // sync call–we can't await inside a closure; we'll use a pre-
-            // fetched map approach for simplicity (small range expected).
-            None::<u64> // placeholder; see note below
-        };
 
         // ── Quorum commit check ───────────────────────────────────────────
         // Walk from last_index down and check replication counts directly.
